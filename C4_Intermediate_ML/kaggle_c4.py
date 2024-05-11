@@ -49,3 +49,17 @@ def score_model(model, X_t=X_train, X_v=X_valid, y_t=y_train, y_v=y_valid):
 for i in range(0, len(models)):
     mae = score_model(models[i])
     print("Model %d MAE: %d" % (i+1, mae))
+
+# Define a model
+my_model = RandomForestRegressor(n_estimators=250, random_state=0)
+
+# Fit the model to the training data
+my_model.fit(X, y)
+
+# Generate test predictions
+preds_test = my_model.predict(X_test)
+
+# Save predictions in format used for competition scoring
+output = pd.DataFrame({'Id': X_test.index,
+                       'SalePrice': preds_test})
+output.to_csv('submission.csv', index=False)
