@@ -21,7 +21,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error
 from sklearn.preprocessing import OrdinalEncoder
-from sklearn.preprocessing import OneHotEncoder
 
 # Read the data
 X = pd.read_csv('../dataset/train.csv', index_col='Id')
@@ -114,39 +113,8 @@ d = dict(zip(object_cols, object_nunique))
 # sorted: this sorts the dictionary by its values (number of unique entries)
 # items() method returns a view object that displays a list of a dictionary's key-value tuple pairs.
 # sorting is done based on the 2nd element x[1] of each tuple, which is the number of unique entries
+
 sorted(d.items(), key=lambda x: x[1])
-
-
-# Columns that will be one-hot encoded
-low_cardinality_cols = [col for col in object_cols if X_train[col].nunique() < 10]
-
-# Columns that will be dropped from the dataset
-high_cardinality_cols = list(set(object_cols)-set(low_cardinality_cols))
-
-# print('Categorical columns that will be one-hot encoded:', low_cardinality_cols)
-# print('\nCategorical columns that will be dropped from the dataset:', high_cardinality_cols)
-
-
-# Apply one-hot encoder to each column with categorical data
-OH_encoder = OneHotEncoder(handle_unknown='ignore')
-OH_cols_train = pd.DataFrame(OH_encoder.fit_transform(X_train[low_cardinality_cols]))
-OH_cols_valid = pd.DataFrame(OH_encoder.transform(X_valid[low_cardinality_cols]))
-
-# One-hot encoding removed index; put it back
-OH_cols_train.index = X_train.index
-OH_cols_valid.index = X_valid.index
-
-# Remove categorical columns (will replace with one-hot encoding)
-num_X_train = X_train.drop(object_cols, axis=1)
-num_X_valid = X_valid.drop(object_cols, axis=1)
-
-# Add one-hot encoded columns to numerical features
-OH_X_train = pd.concat([num_X_train, OH_cols_train], axis=1)
-OH_X_valid = pd.concat([num_X_valid, OH_cols_valid], axis=1)
-
-# Ensure all columns have string type
-OH_X_train.columns = OH_X_train.columns.astype(str)
-OH_X_valid.columns = OH_X_valid.columns.astype(str)
 
 # ------------------------------------------------------------------------------------
 
