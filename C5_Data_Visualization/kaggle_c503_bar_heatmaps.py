@@ -47,5 +47,16 @@ ign_filepath = "../dataset/ign_scores.csv"
 # Fill in the line below to read the file into a variable ign_data
 ign_data = pd.read_csv(ign_filepath, index_col="Platform")
 
-average_scores = ign_data.drop(columns='Platform').mean(axis=1)
-print(average_scores)
+# Bar chart showing average score for racing games by platform
+plt.figure(figsize=(16,6))
+
+# Add title
+plt.title("Scores for Racing Games")
+
+# Bar chart showing average arrival delay for Spirit Airlines flights by month
+sns.barplot(x=ign_data.index, y=ign_data['Racing'])
+
+# Add label for vertical axis
+plt.ylabel("Racing Game")
+
+plt.show()
