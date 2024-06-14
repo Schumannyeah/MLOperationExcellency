@@ -1,2 +1,5 @@
 pandas
 scikit-learn
+seaborn
+matplotlib.pyplot
+google-cloud-bigquery
