@@ -3,3 +3,5 @@ scikit-learn
 seaborn
 matplotlib.pyplot
 google-cloud-bigquery
+fuzzywuzzy
+python-Levenshtein
