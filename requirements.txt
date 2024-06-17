@@ -5,3 +5,5 @@ matplotlib.pyplot
 google-cloud-bigquery
 fuzzywuzzy
 python-Levenshtein
+IPython
+category_encoders
