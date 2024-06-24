@@ -1,9 +1,12 @@
+from pathlib import Path
+from learntools.time_series.utils import plot_periodogram, seasonal_plot
+
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 import seaborn as sns
 from sklearn.linear_model import LinearRegression
 from statsmodels.tsa.deterministic import CalendarFourier, DeterministicProcess
-from pathlib import Path
 
 comp_dir = Path('../dataset')
 
@@ -39,22 +42,9 @@ average_sales = (
     .loc['2017']
 )
 
-X = average_sales.to_frame(name='sales')
+X = average_sales.to_frame()
 X["week"] = X.index.week
 X["day"] = X.index.dayofweek
+seasonal_plot(X, y='sales', period='week', freq='day');
 
-# Custom seasonal plot function for line trends
-def custom_seasonal_line_plot(data, y, period, freq):
-    plt.figure(figsize=(14, 7))
-    data['period'] = data.index.map(lambda x: getattr(x, period))
-    data['freq'] = data.index.map(lambda x: getattr(x, freq))
-    avg_data = data.groupby('freq')[y].mean()
-    plt.plot(avg_data, marker='o')
-    plt.title(f'Seasonal Plot: {period} by {freq}')
-    plt.xlabel(freq.capitalize())
-    plt.ylabel('Average Sales')
-    plt.grid(True)
-    plt.show()
-
-# Plot seasonal data with line trends
-custom_seasonal_line_plot(X, y='sales', period='week', freq='day')
+plt.show()
